@@ -1,37 +1,53 @@
-// import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-// import { addContact } from 'redux/contactSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from './redux/contactSlice';
+import { getContacts } from 'components/redux/contactSlice';
 
 export const Form = () => {
   const dispatch = useDispatch();
+  const [contactName, setContactName] = useState('');
+  const [number, setNumber] = useState('');
+  let { contacts } = useSelector(getContacts);
 
-  // const [name, setName] = useState('');
-  // const [number, setNumber] = useState('');
+  const handleChange = event => {
+    const { name, value } = event.target;
 
-  // const handleChange = event => {
-  //   const { name, value } = event.target;
-  //   switch (name) {
-  //     case 'name':
-  //       setName(value);
-  //       break;
+    switch (name) {
+      case 'name':
+        setContactName(value);
+        break;
 
-  //     case 'number':
-  //       setNumber(value);
-  //       break;
+      case 'number':
+        setNumber(value);
+        break;
 
-  //     default:
-  //       return;
-  //   }
-  // };
+      default:
+        return;
+    }
+  };
 
   const handleSubmit = evt => {
     evt.preventDefault();
     const form = evt.target;
-    const name = form.elements.name.value;
-    const number = form.elements.number.value;
-    dispatch(addContact(name, number ));
-    form.reset();
+    const saved = saveContact({ name: contactName, number: number });
+    if (saved) {
+      form.reset();
+    }
+  };
+
+  const saveContact = contact => {
+    const checkName = contacts
+
+      .map(item => item.name.toLowerCase())
+      .some(item => item === contact.name.toLowerCase());
+
+    if (checkName) {
+      window.alert(`This contact ${contact.name} already excist `);
+      return false;
+    } else {
+      dispatch(addContact(contact.name, contact.number));
+      return true;
+    }
   };
 
   return (
@@ -39,7 +55,7 @@ export const Form = () => {
       <label>
         Name
         <input
-          // onChange={handleChange}
+          onChange={handleChange}
           type="text"
           name="name"
           placeholder="Add your name..."
@@ -50,7 +66,7 @@ export const Form = () => {
       <label>
         Contact
         <input
-          // onChange={handleChange}
+          onChange={handleChange}
           type="tel"
           name="number"
           placeholder="Add your number..."
