@@ -1,20 +1,22 @@
-import PropTypes from 'prop-types';
 import { ContactsItem } from './ContactsItem';
+import { useSelector } from 'react-redux';
 
-export const ContactsList = ({ contacts, handlerDelete }) => (
-  <section title="Contacts">
-    <h2>Contacts</h2>
-    <ul className="contacts__list">
-      <ContactsItem contacts={contacts} handlerDelete={handlerDelete} />
-    </ul>
-  </section>
-);
+export const ContactsList = () => {
+  const state = useSelector(state => state);
+  console.log('state:', state);
+  const contacts = state.contacts;
+  console.log('state contacts', contacts);
 
-ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    })
-  ),
-  handlerDelete: PropTypes.func,
+  return (
+    <section title="Contacts">
+      <h2>Contacts</h2>
+      <ul className="contacts__list">
+        {contacts.map(contact => (
+          <li key={contact.id}>
+            <ContactsItem contact={contact} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 };

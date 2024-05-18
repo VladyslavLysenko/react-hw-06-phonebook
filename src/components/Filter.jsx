@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
-export const Filter = ({ value, onChange }) => (
+export const Filter = () => (
   <>
     <label>Find contacts by name</label>
     <input
-      value={value}
+      // value={value}
       type="text"
-      onChange={evt => onChange(evt.currentTarget.value)}
+      // onChange={evt => onChange(evt.currentTarget.value)}
       name=""
       placeholder="find name"
     />
@@ -14,7 +14,7 @@ export const Filter = ({ value, onChange }) => (
 );
 
 
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+// Filter.propTypes = {
+//   value: PropTypes.string.isRequired,
+//   onChange: PropTypes.func.isRequired,
+// };

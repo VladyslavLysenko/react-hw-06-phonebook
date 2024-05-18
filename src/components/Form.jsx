@@ -1,35 +1,37 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+// import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+// import { addContact } from 'redux/contactSlice';
+import { addContact } from './redux/contactSlice';
 
-export const Form = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export const Form = () => {
+  const dispatch = useDispatch();
 
-  const handleChange = event => {
-    const { name, value } = event.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
 
-      case 'number':
-        setNumber(value);
-        break;
+  // const handleChange = event => {
+  //   const { name, value } = event.target;
+  //   switch (name) {
+  //     case 'name':
+  //       setName(value);
+  //       break;
 
-      default:
-        return;
-    }
-  };
+  //     case 'number':
+  //       setNumber(value);
+  //       break;
+
+  //     default:
+  //       return;
+  //   }
+  // };
 
   const handleSubmit = evt => {
     evt.preventDefault();
     const form = evt.target;
-    // console.log('form', form);
-    const saved = onSubmit({ name: name, number: number });
-    // console.log('saved', saved);
-    if (saved) {
-      form.reset();
-    }
+    const name = form.elements.name.value;
+    const number = form.elements.number.value;
+    dispatch(addContact(name, number ));
+    form.reset();
   };
 
   return (
@@ -37,7 +39,7 @@ export const Form = ({ onSubmit }) => {
       <label>
         Name
         <input
-          onChange={handleChange}
+          // onChange={handleChange}
           type="text"
           name="name"
           placeholder="Add your name..."
@@ -48,7 +50,7 @@ export const Form = ({ onSubmit }) => {
       <label>
         Contact
         <input
-          onChange={handleChange}
+          // onChange={handleChange}
           type="tel"
           name="number"
           placeholder="Add your number..."
@@ -59,8 +61,4 @@ export const Form = ({ onSubmit }) => {
       <button type="submit">Send</button>
     </form>
   );
-};
-
-Form.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
